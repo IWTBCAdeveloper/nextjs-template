@@ -1,9 +1,20 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { loadData, startClock, tickClock } from '../redux/actions'
 import styles from '../styles/Home.module.css'
-import Hello from './components/Hello'
+import Hello from '../components/Hello'
+import { wrapper } from '../redux/store'
+import { END } from 'redux-saga'
 
-export default function Home() {
+function Home() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(startClock())
+  }, [dispatch])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -72,3 +83,16 @@ export default function Home() {
     </div>
   )
 }
+
+// export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
+//   store.dispatch(tickClock(false))
+
+//   if (!store.getState().placeholderData) {
+//     store.dispatch(loadData())
+//     store.dispatch(END)
+//   }
+
+//   await store.sagaTask.toPromise()
+// })
+
+export default Home;
